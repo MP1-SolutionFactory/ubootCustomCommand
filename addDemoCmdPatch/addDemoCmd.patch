@@ -1,0 +1,61 @@
+diff --git a/arch/arm/mach-stm32mp/Makefile b/arch/arm/mach-stm32mp/Makefile
+index 1db9057e..910e859c 100644
+--- a/arch/arm/mach-stm32mp/Makefile
++++ b/arch/arm/mach-stm32mp/Makefile
+@@ -22,5 +22,8 @@ obj-$(CONFIG_ARMV7_PSCI) += psci.o
+ obj-$(CONFIG_TFABOOT) += boot_params.o
+ endif
+ 
++obj-y += cmd_demo/
++
++
+ obj-$(CONFIG_$(SPL_)STM32MP15_PWR) += pwr_regulator.o
+ obj-$(CONFIG_OF_SYSTEM_SETUP) += fdt.o
+diff --git a/arch/arm/mach-stm32mp/cmd_demo/Makefile b/arch/arm/mach-stm32mp/cmd_demo/Makefile
+new file mode 100644
+index 00000000..e1e9bb89
+--- /dev/null
++++ b/arch/arm/mach-stm32mp/cmd_demo/Makefile
+@@ -0,0 +1,6 @@
++# SPDX-License-Identifier: GPL-2.0+
++#
++# Copyright (C) 2020, STMicroelectronics - All Rights Reserved
++#
++
++obj-$(CONFIG_CMD_STM32PROG) += cmd_demo.o
+\ No newline at end of file
+diff --git a/arch/arm/mach-stm32mp/cmd_demo/cmd_demo.c b/arch/arm/mach-stm32mp/cmd_demo/cmd_demo.c
+new file mode 100644
+index 00000000..b29853c4
+--- /dev/null
++++ b/arch/arm/mach-stm32mp/cmd_demo/cmd_demo.c
+@@ -0,0 +1,29 @@
++// SPDX-License-Identifier: GPL-2.0+ OR BSD-3-Clause
++/*
++ * Copyright (C) 2020, STMicroelectronics - All Rights Reserved
++ */
++
++#include <common.h>
++#include <command.h>
++
++static int do_stm32_demo(struct cmd_tbl *cmdtp, int flag, int argc,
++			char * const argv[])
++{
++
++	if (argc < 2 ||  argc > 4)
++		return CMD_RET_USAGE;
++
++	puts("starting the demo command...\n");
++
++	puts("demo command complete - returning...\n");
++
++	return CMD_RET_SUCCESS;
++}
++
++U_BOOT_CMD(stm32demo, 3, 0, do_stm32_demo,
++	   "simple demo command addition to uboot (usage string)",
++	   "(help string) <required Arg 0> [<optional Arg 1>] [<optional Arg 2>]\n"
++	   "  required Arg 0 - must be passed on command line\n"
++	   "  optional Arg 1 - not used in demo command\n"
++	   "  optional Arg 2 - not used in demo command (help string)\n"
++);
